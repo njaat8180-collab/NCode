@@ -1,0 +1,72 @@
+{
+  "name": "NCode-mission-control",
+  "displayName": "NCode MISSION CONTROL",
+  "description": "Deadline tracker sidebar for the NCode mission: deadline countdown, verified progress, current phase/task, blockers, test results, checkpoints and next tasks, read live from .NCode/mission/goal-state.json.",
+  "version": "0.1.0",
+  "publisher": "NCode",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "NCode",
+    "mission",
+    "deadline",
+    "progress",
+    "agent"
+  ],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onView:NCode.missionControl"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "NCode",
+          "title": "NCode",
+          "icon": "$(target)"
+        }
+      ]
+    },
+    "views": {
+      "NCode": [
+        {
+          "id": "NCode.missionControl",
+          "name": "MISSION CONTROL",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "NCode.missionControl.refresh",
+        "title": "NCode: Refresh Mission Control",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "NCode.missionControl.openMissionFolder",
+        "title": "NCode: Open Mission Files",
+        "icon": "$(folder)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "NCode.missionControl.refresh",
+          "when": "view == NCode.missionControl",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "Only reads the workspace-local .NCode/mission/goal-state.json file and renders it in a restricted webview."
+    }
+  }
+}

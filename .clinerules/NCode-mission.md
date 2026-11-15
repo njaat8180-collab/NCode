@@ -1,0 +1,46 @@
+# NCode mission (autonomous, deadline-driven)
+
+You are working on the **NCode deadline mission**. The authoritative goal
+lives in the repository, not in chat history.
+
+## Reload order (do this first in every session)
+
+1. `.NCode/mission/GOAL.md` — mission, deadline, outcomes, non-negotiables
+2. `.NCode/mission/ROADMAP.md` — four-day phase schedule and scope-freeze rule
+3. `.NCode/mission/TASKS.md` — the task list with owners and status
+4. `.NCode/mission/PROGRESS.md` — last verified results and activity
+5. `.NCode/mission/goal-state.json` — machine-readable tracker state
+6. `.NCode/mission/BLOCKERS.md`, `.NCode/mission/BENCHMARKS.md`, `.NCode/mission/SESSION_MEMORY.md`
+
+## Hard rules
+
+- **Never fabricate** progress, benchmarks, test results, or background activity.
+- **Never weaken a gate** to make it green and never substitute a mock for real verification.
+- **Never bypass approvals**: shared-server changes, destructive operations, external actions.
+- **File ownership** (multi-agent): Cline owns `src/server/**`, `src/shared/**`,
+  `src/services/**`, `src/**` components/shell, `scripts/**`, `benchmarks/**`,
+  `.NCode/**`, `extensions/**`. **Kilo (MistyJaguar) is INACTIVE** (verified:
+  no pending acks, empty inbox) — Cline therefore owns all remaining work,
+  including the previously-assigned UI surfaces, and sends Kilo no tasks.
+  Kilo's reservations remain intact; reconcile before editing anything Kilo holds.
+  `index.css`, `atlas.css`, `src/animations/*` stay sequential-only.
+- **After each verified increment**: back up edited files to `_checkpoints/`
+  (there is no git repo here) and update `.NCode/mission/goal-state.json`
+  plus `PROGRESS.md`.
+
+## Environment
+
+- Commands are capped at ~30s: run long suites detached, log a `DONE_MARKER`,
+  and poll the log.
+- No jsdom/RTL: verify UI with `tsc --noEmit` plus source-scanning contract
+  tests in `scripts/smoke/*-contract.mjs`.
+- Live model credentials may be absent: blocked gates must be recorded, not faked.
+
+## Verification checklist (run before claiming any increment)
+
+```
+npm run lint        # tsc --noEmit, strict
+npm test            # Vitest regression
+npm run build       # production build
+npm run test:smoke   # smoke + contract suites
+```
